@@ -6,18 +6,22 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace LoterryGames
 {
     public partial class Form1 : Form
     {
         Random rnd = new Random();
-        int iStore;
         DialogResult iExit;
+        private List<CheckBox> CheckBoxes = new List<CheckBox>();
+        private List<CheckBox> SelectedCheckBoxes = new List<CheckBox>();
 
-        private List<CheckBox> CheckBoxes = new List<CheckBox>();  
+        private bool resetMode = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -31,7 +35,7 @@ namespace LoterryGames
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            timer4.Enabled = true;
+            
         }
         private void CreateCheckBoxes()
         {
@@ -43,7 +47,7 @@ namespace LoterryGames
             for (int i = 0; i < 50; i++)
             {
                 CheckBox checkBox = new CheckBox();
-                checkBox.Text = "Number " + (i + 1);
+                checkBox.Text = "" + (i + 1);
                 checkBox.Name = i.ToString();
                 checkBox.AutoSize = true;
 
@@ -53,49 +57,185 @@ namespace LoterryGames
                 checkBox.Left = startX + (column * spacing * 3);
                 checkBox.Top = startY + (row * spacing);
 
+                checkBox.CheckedChanged += CheckBox_CheckedChanged;
+
                 this.Controls.Add(checkBox);
                 CheckBoxes.Add(checkBox);
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void CheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            timer1.Enabled = true;
-            timer2.Enabled = true;
-            timer3.Enabled = true;
-            iStore = 20;
+            var checkBox = sender as CheckBox;
 
+            if (checkBox.Checked)
+            {
+                if (SelectedCheckBoxes.Count >= 3)
+                {
+                    MessageBox.Show("You can only select up to 3 numbers.");
+                    checkBox.Checked = false;
+                    return;
+                }
+                SelectedCheckBoxes.Add(checkBox);
+            }
+            else
+            {
+                SelectedCheckBoxes.Remove(checkBox);
+            }
+
+           
+        }
+
+        private void UpdatePictureBoxes()
+        {
+            if (SelectedCheckBoxes.Count == 3)
+            {
+                var selectedNumbers = GetSelectedNumbers();
+                var generatedNumbers = GetGeneratedNumbers();
+                int matchCount = selectedNumbers.Count(n => generatedNumbers.Contains(n));
+
+                pictureBox1.Visible = (matchCount >= 2);
+
+                pictureBox2.Visible = (matchCount < 2);
+
+            }
+        }
+
+        private int[] GetSelectedNumbers()
+        {
+            return SelectedCheckBoxes.Select(cb => int.Parse(cb.Text.Replace("Number ", ""))).ToArray();
+        }
+
+        private int[] GetGeneratedNumbers()
+        {
+            HashSet<int> numbers = new HashSet<int>();
+            while (numbers.Count < 3)
+            {
+                numbers.Add(rnd.Next(1, 50));
+            }
+            return numbers.ToArray();
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            if (resetMode)
+            {
+                ResetSelections();
+                ResetHighlights();
+                ClearOutputs();
+                pictureBox1.Visible=false;
+                pictureBox2.Visible=false;
+                Lotterbtn.Text = "Lotter"; 
+                resetMode = false; 
+                
+                return;
+            }
+
+            Lotterbtn.Text = "Clear";
+
+            int num1 = 0;
+            int num2 = 0;
+            int num3 = 0;
+
+            Lotterbtn.Enabled = false;
+
+            for (int i = 0; i < 10; i++)
+            {
+                 num1 = rnd.Next(1, 50);
+                 num2 = rnd.Next(1, 50);
+                 num3 = rnd.Next(1, 50);
+
+                txtLotto1.Text = num1.ToString();
+                txtLotto2.Text = num2.ToString();
+                txtLotto3.Text = num3.ToString();
+
+                txtLotto1.BackColor = Color.FromArgb(255, rnd.Next(255), rnd.Next(255), rnd.Next(255));
+                txtLotto2.BackColor = Color.FromArgb(255, rnd.Next(255), rnd.Next(255), rnd.Next(255));
+                txtLotto3.BackColor = Color.FromArgb(255, rnd.Next(255), rnd.Next(255), rnd.Next(255));
+
+                await Task.Delay(300);
+            }
+
+            Lotterbtn.Enabled = true;
+
+            HighlightMatchingCheckBoxes(num1, num2, num3);
+            UpdatePictureBoxes();
+           
             string result = "";
             foreach (Control control in this.Controls)
             {
-                if (control is CheckBox checkBox)
+                if (control is CheckBox checkBox && checkBox.Checked)
                 {
-                    result += $"{checkBox.Text}: {(checkBox.Checked ? "Checked" : "Not Checked")}\n";
+                    result += $"{checkBox.Text}\n";
                 }
             }
-            MessageBox.Show(result, "Checkbox States", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
 
-        private void timer1_Tick(object sender, EventArgs e)
+            if (string.IsNullOrEmpty(result))
+            {
+                result = "No numbers are checked. You need to che";
+            }
+
+            MessageBox.Show(result, "Checked numbers", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                resetMode = true;
+            
+
+    }
+        private void HighlightMatchingCheckBoxes(params int[] numbers)
         {
-            int num1;
-            num1 = rnd.Next(1, 50);
-            txtLotto1.Text = Convert.ToString(num1);
 
-            if (txtLotto1.Text == "0")
+            foreach (var checkBox in CheckBoxes)
             {
-                int num4;
-                num4 = rnd.Next(1, 50);
-                txtLotto1.Text = Convert.ToString(num4);
+                if (checkBox.Checked)
+                {
+                    checkBox.BackColor = Color.PowderBlue; 
+                }
+                else
+                {
+                    checkBox.BackColor = Color.Transparent; 
+                }
             }
 
-            if (txtLotto1.Text == txtLotto2.Text || txtLotto1.Text == txtLotto3.Text)
+            foreach (var checkBox in CheckBoxes)
             {
-                num1 = rnd.Next(1, 50);
-                txtLotto1.Text = Convert.ToString(num1);
+                if (int.TryParse(checkBox.Text.Replace("Number ", ""), out int number))
+                {
+                    if (numbers.Contains(number))
+                    {
+                        checkBox.BackColor = Color.LightGreen;
+                    }
+                }
             }
-            txtLotto1.BackColor = Color.FromArgb(255, rnd.Next(255), rnd.Next(255), rnd.Next(255));
         }
+
+        private void ResetSelections()
+        {
+            var checkBoxesToReset = new List<CheckBox>(SelectedCheckBoxes);
+            foreach (var checkBox in checkBoxesToReset)
+            {
+                checkBox.Checked = false;
+            }
+            SelectedCheckBoxes.Clear();
+        }
+
+        private void ResetHighlights()
+        {
+            foreach (var checkBox in CheckBoxes)
+            {
+                checkBox.BackColor = Color.Empty;
+            }
+        }
+
+        private void ClearOutputs()
+        {
+            txtLotto1.Clear();
+            txtLotto2.Clear();
+            txtLotto3.Clear();
+            txtLotto1.BackColor = SystemColors.Window;
+            txtLotto2.BackColor = SystemColors.Window;
+            txtLotto3.BackColor = SystemColors.Window;
+        }
+
 
         private void button1_Click_1(object sender, EventArgs e)
         {
@@ -114,72 +254,10 @@ namespace LoterryGames
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-
-        }
-
-        private void timer2_Tick(object sender, EventArgs e)
-        {
-            int num2;
-            num2 = rnd.Next(1, 50);
-            txtLotto2.Text = Convert.ToString(num2);
-
-            if (txtLotto2.Text == "0")
-            {
-                int num4;
-                num4 = rnd.Next(1, 50);
-                txtLotto2.Text = Convert.ToString(num4);
-            }
-
-            if (txtLotto1.Text == txtLotto2.Text || txtLotto2.Text == txtLotto3.Text)
-            {
-                num2 = rnd.Next(1, 50);
-                txtLotto1.Text = Convert.ToString(num2);
-            }
-            txtLotto2.BackColor = Color.FromArgb(255, rnd.Next(255), rnd.Next(255), rnd.Next(255));
-        }
-
-        private void timer3_Tick(object sender, EventArgs e)
-        {
-            int num3;
-            Random rnd = new Random();
-            num3 = rnd.Next(1, 50);
-            txtLotto3.Text = Convert.ToString(num3);
-            
-            if (txtLotto3.Text == "0")
-            {
-                num3 = rnd.Next(1, 50);
-                txtLotto3.Text = Convert.ToString(num3);
-            }
-            
-            if (txtLotto3.Text == txtLotto1.Text || txtLotto3.Text == txtLotto2.Text)
-            {
-                int num4;
-                num4 = rnd.Next(1, 50);
-                txtLotto3.Text = Convert.ToString(num4);
-            }
-
-            txtLotto3.BackColor = Color.FromArgb(255, rnd.Next(255), rnd.Next(255), rnd.Next(255));
-            label1.ForeColor = Color.FromArgb(255, rnd.Next(255), rnd.Next(255), rnd.Next(255));
-            btnLottery.BackColor = Color.FromArgb(255, rnd.Next(255), rnd.Next(255), rnd.Next(255));
-            btnLottery.ForeColor = Color.FromArgb(255, rnd.Next(255), rnd.Next(255), rnd.Next(255));
-        }
-
-        private void timer4_Tick(object sender, EventArgs e)
-        {
-            iStore = iStore = 0;
-
-            if (iStore == 0)
-            {
-                timer1.Enabled = false;
-                timer2.Enabled = false;
-                timer3.Enabled = false;
-                timer4.Enabled = false;
-            }
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -187,6 +265,14 @@ namespace LoterryGames
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+        }
+
+        private void txtLotto3_TextChanged(object sender, EventArgs e)
         {
 
         }

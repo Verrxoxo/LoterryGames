@@ -30,32 +30,29 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.btnLottery = new System.Windows.Forms.Button();
+            this.Lotterbtn = new System.Windows.Forms.Button();
             this.txtLotto1 = new System.Windows.Forms.TextBox();
             this.txtLotto2 = new System.Windows.Forms.TextBox();
             this.txtLotto3 = new System.Windows.Forms.TextBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.btnExit = new System.Windows.Forms.Button();
-            this.timer4 = new System.Windows.Forms.Timer(this.components);
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnLottery
+            // Lotterbtn
             // 
-            this.btnLottery.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnLottery.Location = new System.Drawing.Point(112, 350);
-            this.btnLottery.Name = "btnLottery";
-            this.btnLottery.Size = new System.Drawing.Size(155, 61);
-            this.btnLottery.TabIndex = 0;
-            this.btnLottery.Text = "Lotter";
-            this.btnLottery.UseVisualStyleBackColor = true;
-            this.btnLottery.Click += new System.EventHandler(this.button1_Click);
+            this.Lotterbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.Lotterbtn.Location = new System.Drawing.Point(112, 350);
+            this.Lotterbtn.Name = "Lotterbtn";
+            this.Lotterbtn.Size = new System.Drawing.Size(155, 61);
+            this.Lotterbtn.TabIndex = 0;
+            this.Lotterbtn.Text = "Lotter";
+            this.Lotterbtn.UseVisualStyleBackColor = true;
+            this.Lotterbtn.Click += new System.EventHandler(this.button1_Click);
             // 
             // txtLotto1
             // 
@@ -88,18 +85,7 @@
             this.txtLotto3.Size = new System.Drawing.Size(96, 97);
             this.txtLotto3.TabIndex = 6;
             this.txtLotto3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // timer2
-            // 
-            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
-            // 
-            // timer3
-            // 
-            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
+            this.txtLotto3.TextChanged += new System.EventHandler(this.txtLotto3_TextChanged);
             // 
             // label1
             // 
@@ -124,29 +110,33 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.button1_Click_1);
             // 
-            // timer4
-            // 
-            this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(545, 215);
+            this.pictureBox1.Location = new System.Drawing.Point(556, 209);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(239, 223);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Visible = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(628, 266);
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(556, 209);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(247, 223);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 10;
             this.pictureBox2.TabStop = false;
+            this.pictureBox2.Visible = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
             // 
@@ -161,9 +151,11 @@
             this.Controls.Add(this.txtLotto3);
             this.Controls.Add(this.txtLotto2);
             this.Controls.Add(this.txtLotto1);
-            this.Controls.Add(this.btnLottery);
+            this.Controls.Add(this.Lotterbtn);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Lotto Generator";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -174,18 +166,17 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnLottery;
+        private System.Windows.Forms.Button Lotterbtn;
         private System.Windows.Forms.TextBox txtLotto1;
         private System.Windows.Forms.TextBox txtLotto2;
         private System.Windows.Forms.TextBox txtLotto3;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.Timer timer3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnExit;
-        private System.Windows.Forms.Timer timer4;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

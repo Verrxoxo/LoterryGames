@@ -28,15 +28,6 @@ namespace LoterryGames
             CreateCheckBoxes();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            
-        }
         private void CreateCheckBoxes()
         {
             int startX = 10;
@@ -81,9 +72,7 @@ namespace LoterryGames
             else
             {
                 SelectedCheckBoxes.Remove(checkBox);
-            }
-
-           
+            }           
         }
 
         private void UpdatePictureBoxes()
@@ -95,9 +84,7 @@ namespace LoterryGames
                 int matchCount = selectedNumbers.Count(n => generatedNumbers.Contains(n));
 
                 pictureBox1.Visible = (matchCount >= 2);
-
                 pictureBox2.Visible = (matchCount < 2);
-
             }
         }
 
@@ -177,13 +164,11 @@ namespace LoterryGames
 
             MessageBox.Show(result, "Checked numbers", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                resetMode = true;
-            
+            resetMode = true;            
+        }
 
-    }
         private void HighlightMatchingCheckBoxes(params int[] numbers)
         {
-
             foreach (var checkBox in CheckBoxes)
             {
                 if (checkBox.Checked)
@@ -236,7 +221,6 @@ namespace LoterryGames
             txtLotto3.BackColor = SystemColors.Window;
         }
 
-
         private void button1_Click_1(object sender, EventArgs e)
         {
             iExit = MessageBox.Show("Confirm if you want to exit", "Lottery Game" ,MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -245,36 +229,6 @@ namespace LoterryGames
             {
                 Application.Exit();
             }
-        }
-
-        private void label1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-        }
-
-        private void txtLotto3_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.Lotterbtn = new System.Windows.Forms.Button();
             this.txtLotto1 = new System.Windows.Forms.TextBox();
@@ -38,7 +37,6 @@
             this.btnExit = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -63,7 +61,6 @@
             this.txtLotto1.Size = new System.Drawing.Size(96, 97);
             this.txtLotto1.TabIndex = 4;
             this.txtLotto1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtLotto1.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // txtLotto2
             // 
@@ -74,7 +71,6 @@
             this.txtLotto2.Size = new System.Drawing.Size(96, 97);
             this.txtLotto2.TabIndex = 5;
             this.txtLotto2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtLotto2.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // txtLotto3
             // 
@@ -85,7 +81,6 @@
             this.txtLotto3.Size = new System.Drawing.Size(96, 97);
             this.txtLotto3.TabIndex = 6;
             this.txtLotto3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtLotto3.TextChanged += new System.EventHandler(this.txtLotto3_TextChanged);
             // 
             // label1
             // 
@@ -97,7 +92,6 @@
             this.label1.Size = new System.Drawing.Size(235, 39);
             this.label1.TabIndex = 7;
             this.label1.Text = "Lottery Game";
-            this.label1.Click += new System.EventHandler(this.label1_Click_1);
             // 
             // btnExit
             // 
@@ -120,7 +114,6 @@
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Visible = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // pictureBox2
             // 
@@ -132,11 +125,6 @@
             this.pictureBox2.TabIndex = 10;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Visible = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
             // 
@@ -156,7 +144,6 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Lotto Generator";
-            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
@@ -176,7 +163,6 @@
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Timer timer1;
     }
 }
 
